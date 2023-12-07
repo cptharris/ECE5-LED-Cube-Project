@@ -1,9 +1,10 @@
 struct pins {
-  static const int latch = 8;
   static const int data = 11;
+  static const int latch = 8;
   static const int clock = 12;
-  static const int layers[4] = {3, 4, 5, 6}; // not actually using 2!
 };
+
+const int layers[4] = { 7, 6, 5, 4 };
 
 void setup() {
   Serial.begin(115200);
@@ -11,35 +12,60 @@ void setup() {
   pinMode(pins::data, OUTPUT);
   pinMode(pins::clock, OUTPUT);
   for (int i = 0; i < 4; i++) {
-    pinMode(pins::layers[i], OUTPUT);
+    pinMode(layers[i], OUTPUT);
   }
 }
 
-void writeNum(int val) {
+void writeNum(unsigned long val) {
   digitalWrite(pins::latch, LOW);
-  shiftOut(pins::data, pins::clock, MSBFIRST, val / 0b100000000);
-  shiftOut(pins::data, pins::clock, MSBFIRST, val % 0b100000000);
+  shiftOut(pins::data, pins::clock, MSBFIRST, val >> 8);          // bit shift
+  shiftOut(pins::data, pins::clock, MSBFIRST, val & 0b11111111);  // bit-wise and
   digitalWrite(pins::latch, HIGH);
 }
 
 void activateLayer(int num) {
   for (int j = 0; j < 4; j++) {
-    digitalWrite(pins::layers[j], HIGH);
+    digitalWrite(layers[j], HIGH);
   }
-  digitalWrite(pins::layers[num], LOW);
+  digitalWrite(layers[num], LOW);
 }
 
 void activateLED(int x, int y, int z) {
-  writeNum(0); // deactivate all pins
-  activateLayer(z); // activate the requested layer, deactivate all others
-  writeNum(pow(2, x + 4 * y));
+  writeNum(0);       // deactivate all pins
+  activateLayer(z);  // activate the requested layer, deactivate all others
+
+  if (y == 0 && x == 0) {
+    writeNum(1);
+  } else if (y == 0 && x == 1) {
+    writeNum(2);
+  } else {
+    writeNum((int)(pow(2, x) * pow(16, y)) + 1);
+  }
 }
 
 void loop() {
-  for (int i = 1; i <= 4; i++) {
-    for (int j = 1; j <= 4; j++) {
-      activateLED(i, j, 0);
-      delay(50);
+  for (int l = 0; l < 4; l++) {
+    for (int y = 0; y < 4; y++) {
+      for (int x = 0; x < 4; x++) {
+        activateLED(x, y, l);
+        delay(100);
+      }
+    }
+  }
+  for (int l = 0; l < 4; l++) {
+    for (int y = 0; y < 4; y++) {
+      for (int x = 0; x < 4; x++) {
+        activateLED(y, x, l);
+        delay(100);
+      }
+    }
+  }
+  for (int l = 0; l < 4; l++) {
+    for (int y = 0; y < 4; y++) {
+      for (int x = 0; x < 4; x++) {
+        activateLED(l, y, x);
+        delay(100);
+      }
     }
   }
 }
