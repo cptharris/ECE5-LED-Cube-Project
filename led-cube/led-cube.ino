@@ -52,6 +52,7 @@ void loop() {
       }
     }
   }
+
   for (int l = 0; l < 4; l++) {
     for (int y = 0; y < 4; y++) {
       for (int x = 0; x < 4; x++) {
@@ -60,6 +61,7 @@ void loop() {
       }
     }
   }
+
   for (int l = 0; l < 4; l++) {
     for (int y = 0; y < 4; y++) {
       for (int x = 0; x < 4; x++) {
