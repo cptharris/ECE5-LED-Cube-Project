@@ -16,8 +16,10 @@ void CubeControl::activate(int x, int y, int z) {
 }
 
 unsigned long CubeControl::bin(int x, int y) {
-  if (y == 0) {
-    return x;
+  if (y == 0 && x == 0) {
+    return 1;
+  } else if (y == 0 && x == 1) {
+    return 2;
   } else {
     return (int)(pow(2, x) * pow(16, y)) + 1;
   }
