@@ -2,9 +2,9 @@ struct pins {
   static const int data = 11;
   static const int latch = 8;
   static const int clock = 12;
+  static const int layers[];
 };
-
-const int layers[4] = { 7, 6, 5, 4 };
+const int pins::layers[] = { 7, 6, 5, 4 };
 
 void setup() {
   Serial.begin(115200);
@@ -12,7 +12,7 @@ void setup() {
   pinMode(pins::data, OUTPUT);
   pinMode(pins::clock, OUTPUT);
   for (int i = 0; i < 4; i++) {
-    pinMode(layers[i], OUTPUT);
+    pinMode(pins::layers[i], OUTPUT);
   }
 }
 
@@ -25,9 +25,9 @@ void writeNum(unsigned long val) {
 
 void activateLayer(int num) {
   for (int j = 0; j < 4; j++) {
-    digitalWrite(layers[j], HIGH);
+    digitalWrite(pins::layers[j], HIGH);
   }
-  digitalWrite(layers[num], LOW);
+  digitalWrite(pins::layers[num], LOW);
 }
 
 void activateLED(int x, int y, int z) {
