@@ -10,6 +10,7 @@ public:
   void begin();
 private:
   void off();
+  unsigned long bin(int x, int y);
   void write(unsigned long num);
   void activateLayer(unsigned int num);
   int data, latch, clock;

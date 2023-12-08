@@ -12,13 +12,14 @@ CubeControl::CubeControl(int clock, int data, int latch, int layer1, int layer2,
 void CubeControl::activate(int x, int y, int z) {
   write(0);          // deactivate all pins
   activateLayer(z);  // activate the requested layer, deactivate all others
+  write(bin(x, y));
+}
 
-  if (y == 0 && x == 0) {
-    write(1);
-  } else if (y == 0 && x == 1) {
-    write(2);
+unsigned long CubeControl::bin(int x, int y) {
+  if (y == 0) {
+    return x;
   } else {
-    write((int)(pow(2, x) * pow(16, y)) + 1);
+    return (int)(pow(2, x) * pow(16, y)) + 1;
   }
 }
 
