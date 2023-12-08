@@ -6,12 +6,22 @@ const int wait = 200;
 void setup() {
   Serial.begin(115200);
   cube.begin();
+  randomSeed(analogRead(0));
 }
 
 void rain(int numDrops);
+void smile();
+void randomMadness();
 
 void loop() {
-  rain(2);
+  // smile();
+  // return;
+
+  randomMadness();
+
+  rain((int)random(2, 7));
+  rain((int)random(2, 7));
+  rain((int)random(2, 7));
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
@@ -54,6 +64,22 @@ void loop() {
   }
 }
 
+void randomMadness() {
+  for (int i = 0; i < 50; i++) {
+    cube.activate((int)random(0, 4), (int)random(0, 4), (int)random(0, 4));
+    delay(200);
+  }
+}
+
+void smile() {
+  cube.write(6);
+  cube.activateLayer(0);
+  cube.write(9);
+  cube.activateLayer(1);
+  cube.write(6);
+  cube.activateLayer(3);
+}
+
 void rain(int numDrops) {
   int sum = 0;
   int h = 3;
@@ -63,6 +89,6 @@ void rain(int numDrops) {
   while (h >= 0) {
     cube.activateLayer(h--);
     cube.write(sum);
-    delay(1000);
+    delay(800);
   }
 }
