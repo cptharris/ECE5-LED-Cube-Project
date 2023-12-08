@@ -8,28 +8,31 @@ void setup() {
 }
 
 void loop() {
-  for (int l = 0; l < 4; l++) {
-    for (int y = 0; y < 4; y++) {
-      for (int x = 0; x < 4; x++) {
-        cube.activate(x, y, l);
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      for (int k = 0; k < 4; k++) {
+        // switch x, then y, then z
+        cube.activate(k, j, i);
         delay(100);
       }
     }
   }
 
-  for (int l = 0; l < 4; l++) {
-    for (int y = 0; y < 4; y++) {
-      for (int x = 0; x < 4; x++) {
-        cube.activate(y, x, l);
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      for (int k = 0; k < 4; k++) {
+        // switch y, then x, then z
+        cube.activate(j, k, i);
         delay(100);
       }
     }
   }
 
-  for (int l = 0; l < 4; l++) {
-    for (int y = 0; y < 4; y++) {
-      for (int x = 0; x < 4; x++) {
-        cube.activate(l, y, x);
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      for (int k = 0; k < 4; k++) {
+        // switch z, then y, then x
+        cube.activate(i, j, k);
         delay(100);
       }
     }
