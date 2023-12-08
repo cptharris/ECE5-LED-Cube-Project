@@ -1,7 +1,8 @@
 #include "Arduino.h"
 #include "CubeControl.h"
 
-CubeControl::CubeControl(int clock, int data, int latch, int layer1, int layer2, int layer3, int layer4) : clock(clock), data(data), latch(latch) {
+CubeControl::CubeControl(int clock, int data, int latch, int layer1, int layer2, int layer3, int layer4)
+  : clock(clock), data(data), latch(latch) {
   layers[0] = layer1;
   layers[1] = layer2;
   layers[2] = layer3;
@@ -9,7 +10,7 @@ CubeControl::CubeControl(int clock, int data, int latch, int layer1, int layer2,
 }
 
 void CubeControl::activate(int x, int y, int z) {
-  write(0);       // deactivate all pins
+  write(0);          // deactivate all pins
   activateLayer(z);  // activate the requested layer, deactivate all others
 
   if (y == 0 && x == 0) {
@@ -19,6 +20,11 @@ void CubeControl::activate(int x, int y, int z) {
   } else {
     write((int)(pow(2, x) * pow(16, y)) + 1);
   }
+}
+
+void CubeControl::off() {
+  write(0);           // turn off all pins
+  activateLayer(-1);  // turn off all layers
 }
 
 void CubeControl::begin() {
@@ -38,8 +44,7 @@ void CubeControl::write(unsigned long num) {
 }
 
 void CubeControl::activateLayer(unsigned int num) {
-  for (int j = 0; j < 4; j++) {
-    digitalWrite(layers[j], HIGH);
+  for (int i = 0; i < 4; i++) {
+    digitalWrite(layers[i], i != num);
   }
-  digitalWrite(layers[num], LOW);
 }

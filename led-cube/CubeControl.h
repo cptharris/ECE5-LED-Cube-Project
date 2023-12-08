@@ -9,6 +9,7 @@ public:
   void activate(int x, int y, int z);
   void begin();
 private:
+  void off();
   void write(unsigned long num);
   void activateLayer(unsigned int num);
   int data, latch, clock;
