@@ -51,3 +51,46 @@ void CubeControl::activateLayer(unsigned int num) {
     digitalWrite(layers[i], i != num);
   }
 }
+
+void CubeControl::animateSnake(int n, int wait) {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      for (int k = 0; k < 4; k++) {
+        switch (n) {
+          case 1:  // change x, then y, then z
+            activate(i, j, k);
+            break;
+
+          case 2:  // change x, then z, then y
+            activate(i, k, j);
+            break;
+
+          case 3:  // change y, then x, then z
+            activate(j, i, k);
+            break;
+
+          case 4:  // change y, then z, then x
+            activate(j, k, i);
+            break;
+
+          case 5:  // change z, then x, then y
+            activate(k, i, j);
+            break;
+
+          default:
+          case 6:  // change z, then y, then x
+            activate(k, j, i);
+            break;
+        }
+        delay(wait);
+      }
+    }
+  }
+}
+
+void CubeControl::randomMadness(int n, int wait) {
+  for (int i = 0; i < n; i++) {
+    activate((int)random(0, 4), (int)random(0, 4), (int)random(0, 4));
+    delay(wait);
+  }
+}
