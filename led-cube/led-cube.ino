@@ -39,9 +39,9 @@ void rain(int numDrops, unsigned long dropTime, unsigned long timeRain) {
 
   // make drops in random points
   for (int i = 0; i < numDrops; i++) {
-    drops[i][0] = (int)random(0, 3);
-    drops[i][1] = (int)random(0, 3);
-    drops[i][2] = (int)random(0, 3);
+    drops[i][0] = (int)random(0, 4);
+    drops[i][1] = (int)random(0, 4);
+    drops[i][2] = (int)random(0, 4);
   }
 
   // while still raining
