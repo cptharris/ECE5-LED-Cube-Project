@@ -1,4 +1,5 @@
 #include "CubeControl.h"
+#include "Point.h"
 
 CubeControl cube(12, 11, 8, 7, 6, 5, 4);
 
@@ -10,12 +11,17 @@ void setup() {
 
 void rain(int numDrops, unsigned long dropTime, unsigned long timeRain);
 void smile();
-void Tower(int buildSpeed);
+void tower(int buildSpeed);
+void bounce(int numPoints, unsigned long timeMove, unsigned long bounceTime);
 
 void loop() {
   cube.randomMadness(50);
 
-  rain(8, 100, 60000);
+  rain(8, 200, 60000);
+
+  tower(500);
+
+  bounce(2, 400, 10000);
 
   for (int i = 0; i < 6; i++) {
     cube.animateSnake(i + 1);
@@ -48,14 +54,13 @@ void rain(int numDrops, unsigned long dropTime, unsigned long timeRain) {
   while (startTime + timeRain >= millis()) {
     // if the rain drops need to fall
     if (millis() - timeSinceDrop >= dropTime) {
-
       timeSinceDrop = millis();
       for (int i = 0; i < numDrops; i++) {
         drops[i][2]--;
         // regenerate rain drops at the top
         if (drops[i][2] < 0) {
-          drops[i][0] = (int)random(0, 3);
-          drops[i][1] = (int)random(0, 3);
+          drops[i][0] = (int)random(0, 4);
+          drops[i][1] = (int)random(0, 4);
           drops[i][2] = 4;
         }
       }
@@ -68,7 +73,7 @@ void rain(int numDrops, unsigned long dropTime, unsigned long timeRain) {
   }
 }
 
-void Tower(int buildSpeed) {
+void tower(int buildSpeed) {
   int layout[8][2] = { { 0, 1 }, { 1, 0 }, { 2, 0 }, { 3, 1 }, { 3, 2 }, { 2, 3 }, { 1, 3 }, { 0, 2 } };  // Structure Im builder
   int onLEDs[32][3];                                                                                      // onLEDs[i][0] = -1 for off LED
   int LEDCounter = 0;
@@ -93,6 +98,33 @@ void Tower(int buildSpeed) {
       if (onLEDs[i][0] != -1) {
         cube.activate(onLEDs[i][0], onLEDs[i][1], onLEDs[i][2]);
       }
+    }
+  }
+}
+
+void bounce(int numPoints, unsigned long timeMove, unsigned long bounceTime) {
+  // create the points
+  Point p[numPoints];
+  for (int i = 0; i < numPoints; i++) {
+    p[i] = Point();
+  }
+  unsigned long timeSinceMove = 0;
+  unsigned long endTime = millis() + bounceTime;  // declare the end time
+
+  // while not at end time
+  while (endTime > millis()) {
+    // if move time
+    if (millis() - timeSinceMove > timeMove) {
+      // update next move time
+      timeSinceMove = millis();
+      // move all points
+      for (int i = 0; i < numPoints; i++) {
+        p[i].move();
+      }
+    }
+    // draw all points
+    for (int i = 0; i < numPoints; i++) {
+      cube.activate(p[i].getx(), p[i].gety(), p[i].getz());
     }
   }
 }
