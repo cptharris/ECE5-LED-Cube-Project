@@ -20,7 +20,7 @@ public:
   /* -----ANIMATIONS----- */
 
   // snake - different values of n snake differently
-  void animateSnake(int n = 1, int wait = 200);
+  void animateSnake(int n = 1, int wait = 150);
   // randomMadness - randomly turn on n pixels, one after another
   void randomMadness(int n, int wait = 200);
 private:

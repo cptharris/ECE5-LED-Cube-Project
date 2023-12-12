@@ -36,7 +36,9 @@ void CubeControl::begin() {
   pinMode(clock, OUTPUT);
   for (int i = 0; i < 4; i++) {
     pinMode(layers[i], OUTPUT);
+    digitalWrite(layers[i], HIGH);
   }
+  write(0);
 }
 
 void CubeControl::write(unsigned long num) {
