@@ -21,7 +21,9 @@ void loop() {
 
   tower(500);
 
-  bounce(2, 400, 10000);
+  for (int i = 0; i < 5; i++) {
+    bounce(2, 400, 10000);
+  }
 
   for (int i = 0; i < 6; i++) {
     cube.animateSnake(i + 1);
